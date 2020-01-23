@@ -53,9 +53,15 @@ public class Solution {
                 Mesto m1 = mesta.get(pot.get(j)-1);
                 int index2 = pot.get(j+1);
                 if (m1.index == 1) {
-                    tovornjaki.get(i).setPobrano(0);
-                    cost += 10;
-                    tovornjaki.get(i).cas += 30;
+                    if(j!=0) {// taprvic ne dodamo casa!!
+                        tovornjaki.get(i).setPobrano(0);
+                        //cost += 10; ne vem ce se vsakic deset pomoejm ne
+                        tovornjaki.get(i).cas += 30;
+                    }
+                    //to upostevava ze na zacetku tovornjaki*10
+                    /*else{
+                        cost += 10;
+                    }*/
                 }
                 if (m1.sosedjeIndex.contains(index2)){
                     double razdalja = getMinRazdalja(tovornjaki.get(i), m1, index2);
@@ -63,10 +69,10 @@ public class Solution {
                         if (tovornjaki.get(i).pobrano + tab[index2-1] < maxCap){
                             cost += (razdalja * 0.1);
                             tovornjaki.get(i).cas += (razdalja/50*60);
-                            if (tab[m1.index-1] > 0){
+                            if (tab[index2-1] > 0){
                                 tovornjaki.get(i).cas += 12;
-                                tovornjaki.get(i).pobrano += tab[m1.index-1];
-                                tab[m1.index-1] = 0;
+                                tovornjaki.get(i).pobrano += tab[index2-1]; //pobereva index1 sele ko se premakneva na soseda ce ga sploh ima
+                                tab[index2-1] = 0;
                             }
                         }
                         else {

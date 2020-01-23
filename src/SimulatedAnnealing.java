@@ -29,8 +29,8 @@ public class SimulatedAnnealing {
 
 
         System.out.println("Cena organski: " + fs.costFunction(fs.tOrganski, 1));
-        System.out.println("Cena organski: " + fs.costFunction(fs.tPlastika, 2));
-        System.out.println("Cena organski: " + fs.costFunction(fs.tPapir, 3));
+        System.out.println("Cena plastika: " + fs.costFunction(fs.tPlastika, 2));
+        System.out.println("Cena papir: " + fs.costFunction(fs.tPapir, 3));
 
         System.out.println("Organski:");
         for (int i = 0; i<fs.tOrganski.size(); i++){
