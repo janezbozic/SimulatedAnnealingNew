@@ -7,7 +7,9 @@ public class Solution {
     public LinkedList<Tovornjak> tPapir;
     double cena;
     public LinkedList<Mesto> mesta;
-    public int [] vsaMestaSanje;
+    public double [] vsaMestaOrgranski;
+    public double [] vsaMestaPlastika;
+    public double [] vsaMestaPapir;
 
     public Solution (LinkedList<Tovornjak> to, LinkedList<Tovornjak> tp, LinkedList<Tovornjak> tpa, LinkedList<Mesto> m){
         tOrganski = to;
@@ -16,7 +18,18 @@ public class Solution {
 
         cena = 0;
         mesta = m;
-        vsaMestaSanje = new int [mesta.size()];
+        vsaMestaOrgranski = new double [mesta.size()];
+        vsaMestaPlastika = new double [mesta.size()];
+        vsaMestaPapir = new double [mesta.size()];
+        initVsaMesta();
+    }
+
+    private void initVsaMesta() {
+        for (int i = 0; i<mesta.size(); i++){
+            vsaMestaOrgranski[i] = mesta.get(i).getOdpadki(1);
+            vsaMestaPlastika[i] = mesta.get(i).getOdpadki(2);
+            vsaMestaPapir[i] = mesta.get(i).getOdpadki(3);
+        }
     }
 
     public LinkedList<Tovornjak> gettOrganski() {
