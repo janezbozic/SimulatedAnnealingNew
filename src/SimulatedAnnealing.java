@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class SimulatedAnnealing {
 
@@ -23,15 +25,67 @@ public class SimulatedAnnealing {
         int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);
         int steviloTovornjakovPapir = (int) Math.ceil(vsotaSmeti(3) / maxCap);
 
-        Solution fistSolution = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir);
+        Solution fs = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, maxCap);
 
+
+        for (int i = 0; i<fs.tOrganski.size(); i++){
+            System.out.println(Arrays.toString(fs.tOrganski.get(i).pot.toArray()));
+        }
+
+        for (int i = 0; i<fs.tPlastika.size(); i++){
+            System.out.println(Arrays.toString(fs.tPlastika.get(i).pot.toArray()));
+        }
+
+        for (int i = 0; i<fs.tPapir.size(); i++){
+            System.out.println(Arrays.toString(fs.tPapir.get(i).pot.toArray()));
+        }
 
     }
 
-    private static Solution firstSolution(int steviloTovornjakovOrganski, int steviloTovornjakovPlastika, int steviloTovornjakovPapir) {
+    private static Solution firstSolution(int steviloTovornjakovOrganski, int steviloTovornjakovPlastika, int steviloTovornjakovPapir, double maxCap) {
 
+        int stevec = 0;
 
+        Solution sol = new Solution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, mesta ,maxCap);
 
+        dodajRandom(sol, 1);
+        dodajRandom(sol, 2);
+        dodajRandom(sol, 3);
+
+        return sol;
+
+    }
+
+    public static void dodajRandom(Solution sol, int tip){
+
+        int stevec = 0;
+
+        LinkedList<Tovornjak> tovornjaki = sol.getTovornjake(tip);
+
+        while (!sol.jeCisto(tip)){
+            int index = getRandomMesto();
+            while (tovornjaki.get(stevec).pot.get(tovornjaki.get(stevec).pot.size()-1) == index+1){
+                index = getRandomMesto();
+            }
+            tovornjaki.get(stevec).pot.add(index+1);
+            //mesta.get(index).setKolicina(tip, 0);
+            sol.setkolicina(index, tip, 0);
+            stevec++;
+            if (stevec == tovornjaki.size())
+                stevec = 0;
+        }
+
+        for (int i = 0; i < tovornjaki.size(); i++){
+            if (tovornjaki.get(i).pot.get(tovornjaki.get(i).pot.size()-1) != 1)
+                tovornjaki.get(i).pot.add(1);
+        }
+
+    }
+
+    public static int getRandomMesto (){
+        Random rand = new Random();
+        int n = rand.nextInt(mesta.size());
+        return n;
     }
 
     public static double vsotaSmeti(int tip){

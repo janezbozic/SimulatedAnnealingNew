@@ -8,16 +8,14 @@ public class Tovornjak {
     double pobrano;
     double cas;
     double dolzinaPoti;
-    double maxCap;
 
-    public Tovornjak (int vs, double mc){
+    public Tovornjak (int vs){
         cena = 10;
         vrstaSmeti = vs;
         pot = new LinkedList<>();
         pobrano = 0;
         cas = 0;
         dolzinaPoti = 0;
-        maxCap = mc;
     }
 
     public double getCena() {

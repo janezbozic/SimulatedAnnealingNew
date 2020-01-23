@@ -10,11 +10,13 @@ public class Solution {
     public double [] vsaMestaOrgranski;
     public double [] vsaMestaPlastika;
     public double [] vsaMestaPapir;
+    public double maxCap;
 
-    public Solution (LinkedList<Tovornjak> to, LinkedList<Tovornjak> tp, LinkedList<Tovornjak> tpa, LinkedList<Mesto> m){
-        tOrganski = to;
-        tPlastika = tp;
-        tPapir = tpa;
+    public Solution (int to, int tp, int tpa, LinkedList<Mesto> m, double mc){
+        tOrganski = initTovornjaki(to, 1);
+        tPlastika = initTovornjaki(tp, 2);
+        tPapir = initTovornjaki(tpa, 3);
+        maxCap = mc;
 
         cena = 0;
         mesta = m;
@@ -64,6 +66,47 @@ public class Solution {
         this.cena = cena;
     }
 
+    public LinkedList<Tovornjak> getTovornjake (int tip){
+        if (tip == 1)
+            return tOrganski;
+        if (tip == 2)
+            return tPlastika;
+        return tPapir;
+    }
 
+    public boolean jeCisto (int tip){
+
+        for (int i = 0; i<vsaMestaOrgranski.length; i++){
+            if (tip == 1 && vsaMestaOrgranski[i] > 0)
+                return false;
+            if (tip == 2 && vsaMestaPlastika[i] > 0)
+                return false;
+            if (tip == 3 && vsaMestaPapir[i] > 0)
+                return false;
+        }
+
+        return true;
+    }
+
+    public LinkedList<Tovornjak> initTovornjaki(int stevilo, int tip){
+
+        LinkedList<Tovornjak> tovornjaki = new LinkedList<>();
+
+        for (int i = 0; i<stevilo; i++) {
+            Tovornjak t = new Tovornjak(tip);
+            tovornjaki.add(t);
+        }
+
+        return tovornjaki;
+    }
+
+    public void setkolicina(int index, int tip, double vrednost){
+        if (tip == 1)
+            vsaMestaOrgranski[index] = vrednost;
+        else if (tip == 2)
+            vsaMestaPlastika[index] = vrednost;
+        else
+            vsaMestaPapir[index] = vrednost;
+    }
 
 }
