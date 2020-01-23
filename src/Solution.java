@@ -6,13 +6,17 @@ public class Solution {
     public LinkedList<Tovornjak> tPlastika;
     public LinkedList<Tovornjak> tPapir;
     double cena;
+    public LinkedList<Mesto> mesta;
+    public int [] vsaMestaSanje;
 
-    public Solution (LinkedList<Tovornjak> to, LinkedList<Tovornjak> tp, LinkedList<Tovornjak> tpa){
+    public Solution (LinkedList<Tovornjak> to, LinkedList<Tovornjak> tp, LinkedList<Tovornjak> tpa, LinkedList<Mesto> m){
         tOrganski = to;
         tPlastika = tp;
         tPapir = tpa;
 
         cena = 0;
+        mesta = m;
+        vsaMestaSanje = new int [mesta.size()];
     }
 
     public LinkedList<Tovornjak> gettOrganski() {
