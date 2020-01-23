@@ -46,4 +46,7 @@ public class Solution {
     public void setCena(double cena) {
         this.cena = cena;
     }
+
+
+
 }

@@ -17,14 +17,40 @@ public class SimulatedAnnealing {
 
         mesta = new LinkedList<>();
 
-        int maxCap = read("Problem1.txt");
+        double maxCap = read("Problem1.txt");
 
+        int steviloTovornjakovOrganski = (int) (Math.ceil(vsotaSmeti(1) / maxCap));
+        int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);
+        int steviloTovornjakovPapir = (int) Math.ceil(vsotaSmeti(3) / maxCap);
+
+        Solution fistSolution = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir);
+
+
+    }
+
+    private static Solution firstSolution(int steviloTovornjakovOrganski, int steviloTovornjakovPlastika, int steviloTovornjakovPapir) {
 
 
 
     }
 
-    private static int read(String s) throws IOException {
+    public static double vsotaSmeti(int tip){
+        double vsota = 0;
+        for (int i = 0; i<mesta.size(); i++){
+            if (tip == 1){
+                vsota += mesta.get(i).organski;
+            }
+            else if (tip == 2){
+                vsota += mesta.get(i).plastika;
+            }
+            else {
+                vsota += mesta.get(i).papir;
+            }
+        }
+        return vsota;
+    }
+
+    private static double read(String s) throws IOException {
 
         File file = new File(s);
 
@@ -32,7 +58,7 @@ public class SimulatedAnnealing {
 
         String [] line1 = br.readLine().split(",");
         int steviloMest = Integer.parseInt(line1[0]);
-        int maxCap = Integer.parseInt(line1[1]);
+        double maxCap = Double.parseDouble(line1[1]);
 
         for (int i = 0; i<steviloMest; i++){
             String [] line = br.readLine().split(",");
