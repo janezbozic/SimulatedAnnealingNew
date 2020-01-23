@@ -28,17 +28,23 @@ public class SimulatedAnnealing {
         Solution fs = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, maxCap);
 
 
+        System.out.println("Organski:");
         for (int i = 0; i<fs.tOrganski.size(); i++){
             System.out.println(Arrays.toString(fs.tOrganski.get(i).pot.toArray()));
         }
+        System.out.println(fs.jeCisto(1));
 
+        System.out.println("\n\nPlastika:");
         for (int i = 0; i<fs.tPlastika.size(); i++){
             System.out.println(Arrays.toString(fs.tPlastika.get(i).pot.toArray()));
         }
+        System.out.println(fs.jeCisto(2));
 
+        System.out.println("\n\nPapir:");
         for (int i = 0; i<fs.tPapir.size(); i++){
             System.out.println(Arrays.toString(fs.tPapir.get(i).pot.toArray()));
         }
+        System.out.println(fs.jeCisto(3));
 
     }
 
@@ -64,7 +70,7 @@ public class SimulatedAnnealing {
 
         while (!sol.jeCisto(tip)){
             int index = getRandomMesto();
-            while (tovornjaki.get(stevec).pot.get(tovornjaki.get(stevec).pot.size()-1) == index+1){
+            while (tovornjaki.get(stevec).pot.size() > 0 && tovornjaki.get(stevec).pot.get(tovornjaki.get(stevec).pot.size()-1) == index+1){
                 index = getRandomMesto();
             }
             tovornjaki.get(stevec).pot.add(index+1);

@@ -13,6 +13,7 @@ public class Tovornjak {
         cena = 10;
         vrstaSmeti = vs;
         pot = new LinkedList<>();
+        pot.add(1);
         pobrano = 0;
         cas = 0;
         dolzinaPoti = 0;
