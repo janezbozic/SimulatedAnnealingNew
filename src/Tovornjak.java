@@ -2,7 +2,6 @@ import java.util.LinkedList;
 
 public class Tovornjak {
 
-    double cena;
     int vrstaSmeti;
     LinkedList<Integer> pot;
     double pobrano;
@@ -10,21 +9,12 @@ public class Tovornjak {
     double dolzinaPoti;
 
     public Tovornjak (int vs){
-        cena = 10;
         vrstaSmeti = vs;
         pot = new LinkedList<>();
         pot.add(1);
         pobrano = 0;
         cas = 0;
         dolzinaPoti = 0;
-    }
-
-    public double getCena() {
-        return cena;
-    }
-
-    public void setCena(double cena) {
-        this.cena = cena;
     }
 
     public int getVrstaSmeti() {

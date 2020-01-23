@@ -28,6 +28,10 @@ public class SimulatedAnnealing {
         Solution fs = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, maxCap);
 
 
+        System.out.println("Cena organski: " + fs.costFunction(fs.tOrganski, 1));
+        System.out.println("Cena organski: " + fs.costFunction(fs.tPlastika, 2));
+        System.out.println("Cena organski: " + fs.costFunction(fs.tPapir, 3));
+
         System.out.println("Organski:");
         for (int i = 0; i<fs.tOrganski.size(); i++){
             System.out.println(Arrays.toString(fs.tOrganski.get(i).pot.toArray()));
@@ -58,6 +62,8 @@ public class SimulatedAnnealing {
         dodajRandom(sol, 2);
         dodajRandom(sol, 3);
 
+        sol.initVsaMesta();
+
         return sol;
 
     }
@@ -74,7 +80,6 @@ public class SimulatedAnnealing {
                 index = getRandomMesto();
             }
             tovornjaki.get(stevec).pot.add(index+1);
-            //mesta.get(index).setKolicina(tip, 0);
             sol.setkolicina(index, tip, 0);
             stevec++;
             if (stevec == tovornjaki.size())
