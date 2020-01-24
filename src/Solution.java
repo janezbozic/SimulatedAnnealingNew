@@ -215,7 +215,28 @@ public class Solution {
 
         double rand = Math.random();
 
-        if (rand > 0.5){
+        if(rand < 0.2){
+            double randTip=Math.random();
+            if(randTip<0.33) {
+                int rTovornjak = (int) (Math.random() * (tOrganski.size()));
+                int rMesto= (int) (Math.random() * (mesta.size()));
+                int rIndex=(int) (Math.random() * (tOrganski.get(rTovornjak).pot.size()-2)+1);
+                tOrganski.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto));
+            }
+            else if(randTip>=0.33 && randTip<0.67) {
+                int rTovornjak = (int) (Math.random() * (tPlastika.size()));
+                int rMesto= (int) (Math.random() * (mesta.size()));
+                int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-2)+1);
+                tPlastika.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto));
+            }
+            else {
+                int rTovornjak = (int) (Math.random() * (tPapir.size()));
+                int rMesto= (int) (Math.random() * (mesta.size()));
+                int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-2)+1);
+                tPapir.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto));
+            }
+        }
+        else if (rand < 0.5){
 
         }
 
