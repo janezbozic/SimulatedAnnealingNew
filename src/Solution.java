@@ -26,6 +26,21 @@ public class Solution {
         initVsaMesta();
     }
 
+    public Solution (LinkedList<Mesto> m, double mc, Solution prevSol){
+
+        maxCap = mc;
+
+        cena = 0;
+        mesta = m;
+        vsaMestaOrgranski = new double [mesta.size()];
+        vsaMestaPlastika = new double [mesta.size()];
+        vsaMestaPapir = new double [mesta.size()];
+        initVsaMesta();
+
+        setFromPrev(prevSol);
+
+    }
+
     public void initVsaMesta() {
         for (int i = 0; i<mesta.size(); i++){
             vsaMestaOrgranski[i] = mesta.get(i).getOdpadki(1);
@@ -53,30 +68,26 @@ public class Solution {
                 Mesto m1 = mesta.get(pot.get(j)-1);
                 int index2 = pot.get(j+1);
                 if (m1.index == 1) {
-                    if(j!=0) {// taprvic ne dodamo casa!!
+                    if(j!=0) {
                         tovornjaki.get(i).setPobrano(0);
-                        //cost += 10; ne vem ce se vsakic deset pomoejm ne
+                        cost += 10;
                         tovornjaki.get(i).cas += 30;
                     }
-                    //to upostevava ze na zacetku tovornjaki*10
-                    /*else{
-                        cost += 10;
-                    }*/
                 }
                 if (m1.sosedjeIndex.contains(index2)){
                     double razdalja = getMinRazdalja(tovornjaki.get(i), m1, index2);
                     if (razdalja != Double.MAX_VALUE){
-                        if (tovornjaki.get(i).pobrano + tab[index2-1] < maxCap){
+                        if (tovornjaki.get(i).pobrano + tab[index2-1] <= maxCap){
                             cost += (razdalja * 0.1);
                             tovornjaki.get(i).cas += (razdalja/50*60);
                             if (tab[index2-1] > 0){
                                 tovornjaki.get(i).cas += 12;
-                                tovornjaki.get(i).pobrano += tab[index2-1]; //pobereva index1 sele ko se premakneva na soseda ce ga sploh ima
+                                tovornjaki.get(i).pobrano += tab[index2-1];
                                 tab[index2-1] = 0;
                             }
                         }
                         else {
-                            cost += 500;
+                            //cost += 500;
                             cost += (razdalja * 0.1);
                             tovornjaki.get(i).cas += (razdalja/50*60);
                         }
@@ -190,6 +201,34 @@ public class Solution {
             vsaMestaPlastika[index] = vrednost;
         else
             vsaMestaPapir[index] = vrednost;
+    }
+
+    public void setFromPrev (Solution prevSol){
+
+        tOrganski = new LinkedList<>();
+        tPlastika = new LinkedList<>();
+        tPapir = new LinkedList<>();
+
+        kopirajTovornjak(prevSol.tOrganski, tOrganski);
+        kopirajTovornjak(prevSol.tPlastika, tPlastika);
+        kopirajTovornjak(prevSol.tPapir, tPapir);
+
+        double rand = Math.random();
+
+        if (rand > 0.5){
+
+        }
+
+    }
+
+    private void kopirajTovornjak (LinkedList<Tovornjak> tovornjaki, LinkedList<Tovornjak> destTovornjaki){
+        for (int i = 0; i<tovornjaki.size(); i++){
+            Tovornjak t = new Tovornjak(tovornjaki.get(i).getVrstaSmeti());
+            for (int j = 0; j<tovornjaki.get(i).pot.size(); j++){
+                t.pot.add(tovornjaki.get(i).pot.get(j).intValue());
+            }
+            destTovornjaki.add(t);
+        }
     }
 
 }
