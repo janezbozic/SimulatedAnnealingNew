@@ -14,12 +14,12 @@ public class SimulatedAnnealing {
 
         double T = 1;
         double Tmin = 0.0001;
-        double alpha = 0.7;
-        int numIterations = 1000;
+        double alpha = 0.9;
+        int numIterations = 2000;
 
         mesta = new LinkedList<>();
 
-        double maxCap = read("Problem1.txt");
+        double maxCap = read("Problem6.txt");
 
         int steviloTovornjakovOrganski = (int) (Math.ceil(vsotaSmeti(1) / maxCap));
         int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);
@@ -59,7 +59,7 @@ public class SimulatedAnnealing {
 
                 Solution nSol = new Solution(mesta, maxCap, fs);
 
-                for (int j = 0; j<100; j++){
+                for (int j = 0; j<300; j++){
                     Solution nSol1 = new Solution(mesta, maxCap, fs);
                     if (nSol1.cena < nSol.cena)
                         nSol = nSol1;
