@@ -221,31 +221,58 @@ public class Solution {
                 int rTovornjak = (int) (Math.random() * (tOrganski.size()));
                 int rMesto= (int) (Math.random() * (mesta.size()));
                 int rIndex=(int) (Math.random() * (tOrganski.get(rTovornjak).pot.size()-2)+1);
-                tOrganski.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto));
+                tOrganski.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
             else if(randTip>=0.33 && randTip<0.67) {
                 int rTovornjak = (int) (Math.random() * (tPlastika.size()));
                 int rMesto= (int) (Math.random() * (mesta.size()));
                 int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-2)+1);
-                tPlastika.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto));
+                tPlastika.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
             else {
                 int rTovornjak = (int) (Math.random() * (tPapir.size()));
                 int rMesto= (int) (Math.random() * (mesta.size()));
                 int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-2)+1);
-                tPapir.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto));
+                tPapir.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
         }
-        else if (rand < 0.5){
-
+        else if (rand < 0.7){
+            double randTip=Math.random();
+            if(randTip<0.33 ) {
+                int rTovornjak = (int) (Math.random() * (tOrganski.size()));
+                if (tOrganski.get(rTovornjak).pot.size()-3 > 0) {
+                    int rIndex = (int) (Math.random() * (tOrganski.get(rTovornjak).pot.size() - 3) + 1);
+                    tOrganski.get(rTovornjak).pot.remove(rIndex+1);
+                    if (!jeSosed(tOrganski.get(rTovornjak).pot.get(rIndex), tOrganski.get(rTovornjak).pot.get(rIndex+1))){
+                        Mesto m1 = mesta.get(tOrganski.get(rTovornjak).pot.get(rIndex)-1);
+                        int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
+                        tOrganski.get(rTovornjak).pot.add(rIndex+1, m1.sosedje.get(rSosed));
+                    }
+                }
+            }
+            else if(randTip>=0.33 && randTip<0.67) {
+                int rTovornjak = (int) (Math.random() * (tPlastika.size()));
+                int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-3)+1);
+            }
+            else {
+                int rTovornjak = (int) (Math.random() * (tPapir.size()));
+                int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-3)+1);
+            }
         }
 
+    }
+
+    private boolean jeSosed(int index1, int index2) {
+        Mesto m1 = mesta.get(index1-1);
+        if (m1.sosedjeIndex.contains(index2))
+            return true;
+        return false;
     }
 
     private void kopirajTovornjak (LinkedList<Tovornjak> tovornjaki, LinkedList<Tovornjak> destTovornjaki){
         for (int i = 0; i<tovornjaki.size(); i++){
             Tovornjak t = new Tovornjak(tovornjaki.get(i).getVrstaSmeti());
-            for (int j = 0; j<tovornjaki.get(i).pot.size(); j++){
+            for (int j = 1; j<tovornjaki.get(i).pot.size(); j++){
                 t.pot.add(tovornjaki.get(i).pot.get(j).intValue());
             }
             destTovornjaki.add(t);

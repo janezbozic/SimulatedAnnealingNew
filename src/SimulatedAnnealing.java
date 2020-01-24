@@ -27,6 +27,7 @@ public class SimulatedAnnealing {
 
         Solution fs = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, maxCap);
 
+        Solution ns = new Solution(mesta, maxCap, fs);
 
         System.out.println("Cena organski: " + fs.costFunction(fs.tOrganski, 1));
         System.out.println("Cena plastika: " + fs.costFunction(fs.tPlastika, 2));
