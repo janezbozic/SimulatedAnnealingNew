@@ -13,9 +13,9 @@ public class SimulatedAnnealing {
     public static void main (String []args) throws IOException {
 
         double T = 1;
-        double Tmin = .0001;
-        double alpha = 0.9;
-        int numIterations = 10000;
+        double Tmin = 0.0001;
+        double alpha = 0.7;
+        int numIterations = 1000;
 
         mesta = new LinkedList<>();
 
@@ -26,11 +26,8 @@ public class SimulatedAnnealing {
         int steviloTovornjakovPapir = (int) Math.ceil(vsotaSmeti(3) / maxCap);
 
         Solution fs = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, maxCap);
-        Solution ns = new Solution(mesta, maxCap, fs);
 
-        System.out.println("Cena organski: " + fs.costFunction(fs.tOrganski, 1));
-        System.out.println("Cena plastika: " + fs.costFunction(fs.tPlastika, 2));
-        System.out.println("Cena papir: " + fs.costFunction(fs.tPapir, 3));
+        fs.cena = fs.vsotaCen();
 
         System.out.println("Organski:");
         for (int i = 0; i<fs.tOrganski.size(); i++){
@@ -50,27 +47,51 @@ public class SimulatedAnnealing {
         }
         System.out.println(fs.jeCisto(3));
 
-        System.out.println("Cena organski: " + ns.costFunction(ns.tOrganski, 1));
-        System.out.println("Cena plastika: " + ns.costFunction(ns.tPlastika, 2));
-        System.out.println("Cena papir: " + ns.costFunction(ns.tPapir, 3));
 
-        System.out.println("Organski:");
-        for (int i = 0; i<ns.tOrganski.size(); i++){
-            System.out.println(Arrays.toString(ns.tOrganski.get(i).pot.toArray()));
+        double min = Double.MAX_VALUE;
+
+        while (T > Tmin) {
+            for (int i=0;i<numIterations;i++){
+
+                if (fs.cena < min){
+                    min = fs.cena;
+                }
+
+                Solution nSol = new Solution(mesta, maxCap, fs);
+
+                for (int j = 0; j<100; j++){
+                    Solution nSol1 = new Solution(mesta, maxCap, fs);
+                    if (nSol1.cena < nSol.cena)
+                        nSol = nSol1;
+                }
+
+                double ap = Math.pow(Math.E, (fs.cena - nSol.cena)/T);
+                if (ap > Math.random())
+                    fs = nSol;
+            }
+            T *= alpha;
+
         }
-        System.out.println(ns.jeCisto(1));
+
+        System.out.println("\n\n\n\n========================================================================");
+        System.out.println(fs.cena);
+        System.out.println("Organski:");
+        for (int i = 0; i<fs.tOrganski.size(); i++){
+            System.out.println(Arrays.toString(fs.tOrganski.get(i).pot.toArray()));
+        }
+        System.out.println(fs.jeCisto(1));
 
         System.out.println("\n\nPlastika:");
-        for (int i = 0; i<ns.tPlastika.size(); i++){
-            System.out.println(Arrays.toString(ns.tPlastika.get(i).pot.toArray()));
+        for (int i = 0; i<fs.tPlastika.size(); i++){
+            System.out.println(Arrays.toString(fs.tPlastika.get(i).pot.toArray()));
         }
-        System.out.println(ns.jeCisto(2));
+        System.out.println(fs.jeCisto(2));
 
         System.out.println("\n\nPapir:");
-        for (int i = 0; i<ns.tPapir.size(); i++){
-            System.out.println(Arrays.toString(ns.tPapir.get(i).pot.toArray()));
+        for (int i = 0; i<fs.tPapir.size(); i++){
+            System.out.println(Arrays.toString(fs.tPapir.get(i).pot.toArray()));
         }
-        System.out.println(ns.jeCisto(3));
+        System.out.println(fs.jeCisto(3));
 
     }
 
@@ -96,7 +117,7 @@ public class SimulatedAnnealing {
 
         LinkedList<Tovornjak> tovornjaki = sol.getTovornjake(tip);
 
-        while (!sol.jeCisto(tip)){
+        while (sol.jeCisto(tip) > 0){
             int index = getRandomMesto();
             while (tovornjaki.get(stevec).pot.size() > 0 && tovornjaki.get(stevec).pot.get(tovornjaki.get(stevec).pot.size()-1) == index+1){
                 index = getRandomMesto();

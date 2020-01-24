@@ -12,6 +12,8 @@ public class Solution {
     public double [] vsaMestaPapir;
     public double maxCap;
 
+    int factor = 10;
+
     public Solution (int to, int tp, int tpa, LinkedList<Mesto> m, double mc){
         tOrganski = initTovornjaki(to, 1);
         tPlastika = initTovornjaki(tp, 2);
@@ -30,7 +32,6 @@ public class Solution {
 
         maxCap = mc;
 
-        cena = 0;
         mesta = m;
         vsaMestaOrgranski = new double [mesta.size()];
         vsaMestaPlastika = new double [mesta.size()];
@@ -38,6 +39,8 @@ public class Solution {
         initVsaMesta();
 
         setFromPrev(prevSol);
+
+        cena = vsotaCen();
 
     }
 
@@ -93,11 +96,11 @@ public class Solution {
                         }
                     }
                     else {
-                        cost += 1500;
+                        cost += 1500*factor;
                     }
                 }
                 else {
-                    cost += 2500;
+                    cost += 2500*factor;
                 }
             }
             if (tovornjaki.get(i).pobrano > 0)
@@ -111,7 +114,17 @@ public class Solution {
             }
         }
 
+        cost += 1500 * factor * jeCisto(tip);
+
         return cost;
+    }
+
+    public double vsotaCen(){
+        double a = costFunction(tOrganski, 1);
+        double b = costFunction(tPlastika, 2);
+        double c = costFunction(tPapir, 3);
+
+        return a+b+c;
     }
 
     private static double getMinRazdalja(Tovornjak tovornjak, Mesto m1, int index2) {
@@ -168,18 +181,20 @@ public class Solution {
         return tPapir;
     }
 
-    public boolean jeCisto (int tip){
+    public int jeCisto (int tip){
+
+        int count = 0;
 
         for (int i = 0; i<vsaMestaOrgranski.length; i++){
             if (tip == 1 && vsaMestaOrgranski[i] > 0)
-                return false;
-            if (tip == 2 && vsaMestaPlastika[i] > 0)
-                return false;
-            if (tip == 3 && vsaMestaPapir[i] > 0)
-                return false;
+                count++;
+            else if (tip == 2 && vsaMestaPlastika[i] > 0)
+                count++;
+            else if (tip == 3 && vsaMestaPapir[i] > 0)
+                count++;
         }
 
-        return true;
+        return count;
     }
 
     public LinkedList<Tovornjak> initTovornjaki(int stevilo, int tip){
@@ -215,28 +230,28 @@ public class Solution {
 
         double rand = Math.random();
 
-        if(rand < 0.2){
+        if(rand < 0.15){
             double randTip=Math.random();
             if(randTip<0.33) {
                 int rTovornjak = (int) (Math.random() * (tOrganski.size()));
-                int rMesto= (int) (Math.random() * (mesta.size()));
+                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
                 int rIndex=(int) (Math.random() * (tOrganski.get(rTovornjak).pot.size()-2)+1);
                 tOrganski.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
             else if(randTip>=0.33 && randTip<0.67) {
                 int rTovornjak = (int) (Math.random() * (tPlastika.size()));
-                int rMesto= (int) (Math.random() * (mesta.size()));
+                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
                 int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-2)+1);
                 tPlastika.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
             else {
                 int rTovornjak = (int) (Math.random() * (tPapir.size()));
-                int rMesto= (int) (Math.random() * (mesta.size()));
+                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
                 int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-2)+1);
                 tPapir.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
         }
-        else if (rand < 0.7){
+        else if (rand < 0.8){
             double randTip=Math.random();
             if(randTip<0.33 ) {
                 int rTovornjak = (int) (Math.random() * (tOrganski.size()));
@@ -275,7 +290,7 @@ public class Solution {
                 }
             }
         }
-        else if (rand < 0.85){
+        else if (rand < 0.9){
             double randTip=Math.random();
             if(randTip<0.33 ) {
                 Tovornjak t = new Tovornjak(1);
