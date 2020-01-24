@@ -10,7 +10,7 @@ public class SimulatedAnnealing {
 
     static LinkedList<Mesto> mesta;
 
-    public static void main (String [] args) throws IOException {
+    public static void main (String []args) throws IOException {
 
         double T = 1;
         double Tmin = .0001;
@@ -26,7 +26,6 @@ public class SimulatedAnnealing {
         int steviloTovornjakovPapir = (int) Math.ceil(vsotaSmeti(3) / maxCap);
 
         Solution fs = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, maxCap);
-
         Solution ns = new Solution(mesta, maxCap, fs);
 
         System.out.println("Cena organski: " + fs.costFunction(fs.tOrganski, 1));
@@ -50,6 +49,28 @@ public class SimulatedAnnealing {
             System.out.println(Arrays.toString(fs.tPapir.get(i).pot.toArray()));
         }
         System.out.println(fs.jeCisto(3));
+
+        System.out.println("Cena organski: " + ns.costFunction(ns.tOrganski, 1));
+        System.out.println("Cena plastika: " + ns.costFunction(ns.tPlastika, 2));
+        System.out.println("Cena papir: " + ns.costFunction(ns.tPapir, 3));
+
+        System.out.println("Organski:");
+        for (int i = 0; i<ns.tOrganski.size(); i++){
+            System.out.println(Arrays.toString(ns.tOrganski.get(i).pot.toArray()));
+        }
+        System.out.println(ns.jeCisto(1));
+
+        System.out.println("\n\nPlastika:");
+        for (int i = 0; i<ns.tPlastika.size(); i++){
+            System.out.println(Arrays.toString(ns.tPlastika.get(i).pot.toArray()));
+        }
+        System.out.println(ns.jeCisto(2));
+
+        System.out.println("\n\nPapir:");
+        for (int i = 0; i<ns.tPapir.size(); i++){
+            System.out.println(Arrays.toString(ns.tPapir.get(i).pot.toArray()));
+        }
+        System.out.println(ns.jeCisto(3));
 
     }
 
