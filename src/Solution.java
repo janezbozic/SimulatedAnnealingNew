@@ -122,26 +122,30 @@ public class Solution {
                     if (skupno != null) {
                         double razdalja = getMinRazdalja(tovornjak, m1, skupno.index);
                         if (razdalja != Double.MAX_VALUE) {
-                            if (tovornjak.pobrano + tab[index2-1] <= maxCap) {
+                            if (tovornjak.pobrano + tab[skupno.index-1] <= maxCap) {
                                 cost += (razdalja * 0.1);
                                 tovornjak.cas += (razdalja / 50 * 60);
-                                if (tab[index2 - 1] > 0) {
+                                if (tab[skupno.index-1] > 0) {
                                     tovornjak.cas += 12;
-                                    tovornjak.pobrano += tab[index2 - 1];
-                                    tab[index2 - 1] = 0;
+                                    tovornjak.pobrano += tab[skupno.index-1];
+                                    tab[skupno.index-1] = 0;
                                 }
+                                tovornjak.pot.add(j+1, skupno.index);
+                            }
+                            else {
+                                cost += 15000*mesta.size();
                             }
                         }
                         else{
-                            double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
+                           /* double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
                             if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
                                 tovornjak.pot.add(j+1, 1);
                                 cost += (razdalja1 * 0.1);
                                 tovornjak.cas += (razdalja1 / 50 * 60);
                             }
-                            else {
+                            else {*/
                                 cost += 15000*mesta.size();
-                            }
+                            //}
                         }
                     }
                     else
@@ -253,7 +257,7 @@ public class Solution {
                 int rIndex=(int) (Math.random() * (tOrganski.get(rTovornjak).pot.size()-1));
                 Mesto m1 = mesta.get(tOrganski.get(rTovornjak).pot.get(rIndex)-1);
                 int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                if (m1.sosedjeIndex.get(rSosed) == tOrganski.get(rTovornjak).pot.get(rIndex+1))
+                if (m1.sosedjeIndex.get(rSosed).intValue() == tOrganski.get(rTovornjak).pot.get(rIndex+1).intValue())
                     rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
                 tOrganski.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
             }
@@ -262,7 +266,7 @@ public class Solution {
                 int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-1));
                 Mesto m1 = mesta.get(tPlastika.get(rTovornjak).pot.get(rIndex)-1);
                 int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                if (m1.sosedjeIndex.get(rSosed) == tPlastika.get(rTovornjak).pot.get(rIndex+1))
+                if (m1.sosedjeIndex.get(rSosed).intValue() == tPlastika.get(rTovornjak).pot.get(rIndex+1).intValue())
                     rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
                 tPlastika.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
             }
@@ -271,7 +275,7 @@ public class Solution {
                 int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-1));
                 Mesto m1 = mesta.get(tPapir.get(rTovornjak).pot.get(rIndex)-1);
                 int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                if (m1.sosedjeIndex.get(rSosed) == tPapir.get(rTovornjak).pot.get(rIndex+1))
+                if (m1.sosedjeIndex.get(rSosed).intValue() == tPapir.get(rTovornjak).pot.get(rIndex+1).intValue())
                     rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
                 tPapir.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
             }
@@ -336,7 +340,8 @@ public class Solution {
                 tPapir.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
         }
-        else if (rand < 0.8){
+        //else if (rand < 0.8){
+        else {
             double randTip=Math.random();
             if(randTip<0.33 ) {
                 int rTovornjak = (int) (Math.random() * (tOrganski.size()));
@@ -344,7 +349,7 @@ public class Solution {
                     int rIndex = (int) (Math.random() * (tOrganski.get(rTovornjak).pot.size() - 3) + 1);
                     tOrganski.get(rTovornjak).pot.remove(rIndex+1);
                     if (!jeSosed(tOrganski.get(rTovornjak).pot.get(rIndex), tOrganski.get(rTovornjak).pot.get(rIndex+1))){
-                        if(tOrganski.get(rTovornjak).pot.get(rIndex) != tOrganski.get(rTovornjak).pot.get(rIndex+1)) {
+                        if(tOrganski.get(rTovornjak).pot.get(rIndex).intValue() != tOrganski.get(rTovornjak).pot.get(rIndex+1).intValue()) {
                             Mesto skupno = najdiSkupnega(tOrganski.get(rTovornjak).pot.get(rIndex), tOrganski.get(rTovornjak).pot.get(rIndex + 1));
                             if(skupno==null) {
                                 Mesto m1 = mesta.get(tOrganski.get(rTovornjak).pot.get(rIndex) - 1);
@@ -369,7 +374,7 @@ public class Solution {
                     int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-3)+1);
                     tPlastika.get(rTovornjak).pot.remove(rIndex+1);
                     if (!jeSosed(tPlastika.get(rTovornjak).pot.get(rIndex), tPlastika.get(rTovornjak).pot.get(rIndex+1))){
-                        if(tPlastika.get(rTovornjak).pot.get(rIndex) != tPlastika.get(rTovornjak).pot.get(rIndex+1)) {
+                        if(tPlastika.get(rTovornjak).pot.get(rIndex).intValue() != tPlastika.get(rTovornjak).pot.get(rIndex+1).intValue()) {
                             Mesto skupno = najdiSkupnega(tPlastika.get(rTovornjak).pot.get(rIndex), tPlastika.get(rTovornjak).pot.get(rIndex + 1));
                             if (skupno == null) {
                                 Mesto m1 = mesta.get(tPlastika.get(rTovornjak).pot.get(rIndex) - 1);
@@ -393,7 +398,7 @@ public class Solution {
                     int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-3)+1);
                     tPapir.get(rTovornjak).pot.remove(rIndex+1);
                     if (!jeSosed(tPapir.get(rTovornjak).pot.get(rIndex), tPapir.get(rTovornjak).pot.get(rIndex+1))){
-                        if(tPapir.get(rTovornjak).pot.get(rIndex) != tPapir.get(rTovornjak).pot.get(rIndex+1)) {
+                        if(tPapir.get(rTovornjak).pot.get(rIndex).intValue() != tPapir.get(rTovornjak).pot.get(rIndex+1).intValue()) {
                             Mesto skupno = najdiSkupnega(tPapir.get(rTovornjak).pot.get(rIndex), tPapir.get(rTovornjak).pot.get(rIndex + 1));
                             if (skupno == null) {
                                 Mesto m1 = mesta.get(tPapir.get(rTovornjak).pot.get(rIndex) - 1);
@@ -412,7 +417,7 @@ public class Solution {
                 }
             }
         }
-        else if (rand < 0.95){
+       /* else if (rand < 0.95){
             double randTip=Math.random();
             if(randTip<0.33 ) {
                 Tovornjak t = new Tovornjak(1);
@@ -445,7 +450,7 @@ public class Solution {
                 tPapir.add(t);
             }
         }
-        else {
+        else {m1.sosedjeIndex
             double randTip=Math.random();
             if(randTip<0.33 && (int) (Math.ceil(vsotaSmeti(1)/maxCap)) < tOrganski.size()) {
                 int rTovornjak = (int) (Math.random() * (tOrganski.size()));
@@ -459,13 +464,13 @@ public class Solution {
                 int rTovornjak = (int) (Math.random() * (tPapir.size()));
                 tPapir.remove(rTovornjak);
             }
-        }
+        }*/
     }
     public Mesto najdiSkupnega(int index1, int index2){
         Mesto m1=mesta.get(index1-1);
         Mesto m2=mesta.get(index2-1);
         for(int i=0;i<m1.sosedjeIndex.size()-1; i++){
-            if(m2.sosedjeIndex.contains(m1.sosedjeIndex.get(i))){
+            if(m2.sosedjeIndex.contains(m1.sosedjeIndex.get(i)) && mesta.get(m1.sosedjeIndex.get(i)-1).sosedjeIndex.contains(m2.index)){
                 return mesta.get(m1.sosedjeIndex.get(i)-1);
             }
         }
@@ -475,7 +480,7 @@ public class Solution {
     private boolean zeObstaja(LinkedList<Integer> pot, int rIndex) {
 
         for (int i = 0; i<rIndex; i++){
-            if (pot.get(i) == pot.get(rIndex))
+            if (pot.get(i).intValue() == pot.get(rIndex).intValue())
                 return true;
         }
 
