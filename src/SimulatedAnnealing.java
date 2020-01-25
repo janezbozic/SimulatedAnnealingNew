@@ -48,13 +48,13 @@ public class SimulatedAnnealing {
         System.out.println(fs.jeCisto(3));
 
 
-        double min = fs.cena;
+        Solution min = fs;
 
         while (T > Tmin) {
             for (int i=0;i<numIterations;i++){
 
-                if (fs.cena < min){
-                    min = fs.cena;
+                if (fs.cena < min.cena){
+                    min = fs;
                 }
 
                 Solution nSol = new Solution(mesta, maxCap, fs);

@@ -106,7 +106,15 @@ public class Solution {
                         }
                     }
                     else {
-                        cost += 150000*mesta.size();
+                        double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
+                        if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
+                            tovornjak.pot.add(j+1, 1);
+                            cost += (razdalja1 * 0.1);
+                            tovornjak.cas += (razdalja1 / 50 * 60);
+                        }
+                        else {
+                            cost += 150000*mesta.size();
+                        }
                     }
                 }
                 else {
