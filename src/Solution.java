@@ -113,12 +113,39 @@ public class Solution {
                             tovornjak.cas += (razdalja1 / 50 * 60);
                         }
                         else {
-                            cost += 150000*mesta.size();
+                            cost += 15000*mesta.size();
                         }
                     }
                 }
                 else {
-                    cost += 250000*mesta.size();
+                    Mesto skupno=najdiSkupnega(m1.index, index2);
+                    if (skupno != null) {
+                        double razdalja = getMinRazdalja(tovornjak, m1, skupno.index);
+                        if (razdalja != Double.MAX_VALUE) {
+                            if (tovornjak.pobrano + tab[index2-1] <= maxCap) {
+                                cost += (razdalja * 0.1);
+                                tovornjak.cas += (razdalja / 50 * 60);
+                                if (tab[index2 - 1] > 0) {
+                                    tovornjak.cas += 12;
+                                    tovornjak.pobrano += tab[index2 - 1];
+                                    tab[index2 - 1] = 0;
+                                }
+                            }
+                        }
+                        else{
+                            double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
+                            if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
+                                tovornjak.pot.add(j+1, 1);
+                                cost += (razdalja1 * 0.1);
+                                tovornjak.cas += (razdalja1 / 50 * 60);
+                            }
+                            else {
+                                cost += 15000*mesta.size();
+                            }
+                        }
+                    }
+                    else
+                        cost += 25000 * mesta.size();
                 }
             }
             if (tovornjak.pobrano > 0)
@@ -132,7 +159,7 @@ public class Solution {
             }
         }
 
-        cost += 150000 * mesta.size() * jeCisto(tip);
+        cost += 15000 * mesta.size() * jeCisto(tip);
 
         return cost;
     }
