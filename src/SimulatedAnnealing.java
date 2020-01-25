@@ -15,11 +15,11 @@ public class SimulatedAnnealing {
         double T = 1;
         double Tmin = 0.0001;
         double alpha = 0.9;
-        int numIterations = 3000;
+        int numIterations = 500;
 
         mesta = new LinkedList<>();
 
-        double maxCap = read("Problem2.txt");
+        double maxCap = read("Problem1.txt");
 
         int steviloTovornjakovOrganski = (int) (Math.ceil(vsotaSmeti(1) / maxCap));
         int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);
@@ -48,7 +48,7 @@ public class SimulatedAnnealing {
         System.out.println(fs.jeCisto(3));
 
 
-        double min = Double.MAX_VALUE;
+        double min = fs.cena;
 
         while (T > Tmin) {
             for (int i=0;i<numIterations;i++){
@@ -59,7 +59,7 @@ public class SimulatedAnnealing {
 
                 Solution nSol = new Solution(mesta, maxCap, fs);
 
-                for (int j = 0; j<200; j++){
+                for (int j = 0; j<500; j++){
                     Solution nSol1 = new Solution(mesta, maxCap, fs);
                     if (nSol1.cena < nSol.cena)
                         nSol = nSol1;

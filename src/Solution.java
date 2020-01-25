@@ -89,8 +89,19 @@ public class Solution {
                                 tab[index2-1] = 0;
                             }
                         }
+                        else if (tab[index2-1] > 0){
+                            double razdalja1 = getMinRazdalja(tovornjaki.get(i), m1, 1);
+                            if (razdalja1 < Double.MAX_VALUE) {
+                                tovornjaki.get(i).pot.add(j+1, 1);
+                                cost += (razdalja1 * 0.1);
+                                tovornjaki.get(i).cas += (razdalja1 / 50 * 60);
+                            }
+                            else {
+                                cost += (razdalja * 0.1);
+                                tovornjaki.get(i).cas += (razdalja/50*60);
+                            }
+                        }
                         else {
-                            //cost += 500;
                             cost += (razdalja * 0.1);
                             tovornjaki.get(i).cas += (razdalja/50*60);
                         }
@@ -132,9 +143,12 @@ public class Solution {
         LinkedList<Razdalja> vsePoti = m1.sosedje.get(index2);
 
         double min = Double.MAX_VALUE;
-        for (int i = 0; i<vsePoti.size(); i++){
-            if (vsePoti.get(i).kapaciteta >= tovornjak.pobrano && vsePoti.get(i).velikost < min)
-                min = vsePoti.get(i).velikost;
+
+        if (vsePoti != null) {
+            for (int i = 0; i < vsePoti.size(); i++) {
+                if (vsePoti.get(i).kapaciteta >= tovornjak.pobrano && vsePoti.get(i).velikost < min)
+                    min = vsePoti.get(i).velikost;
+            }
         }
 
         return min;
@@ -524,10 +538,8 @@ public class Solution {
         Mesto m1=mesta.get(index1-1);
         Mesto m2=mesta.get(index2-1);
         for(int i=0;i<m1.sosedjeIndex.size()-1; i++){
-            for(int j=0;j<m2.sosedjeIndex.size()-1;j++){
-                if(m2.sosedjeIndex.get(j) == m1.sosedjeIndex.get(i)){
-                    return mesta.get(m1.sosedjeIndex.get(i)-1);
-                }
+            if(m2.sosedjeIndex.contains(m1.sosedjeIndex.get(i))){
+                return mesta.get(m1.sosedjeIndex.get(i)-1);
             }
         }
         return null;
