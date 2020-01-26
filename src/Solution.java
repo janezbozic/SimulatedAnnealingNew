@@ -68,79 +68,80 @@ public class Solution {
             LinkedList<Integer> pot = tovornjak.pot;
             for (int j = 0; j<pot.size()-1; j++){
                 Mesto m1 = mesta.get(pot.get(j)-1);
+                int index2 = pot.get(j+1);
                 if (m1.index == 1) {
                     if(j!=0) {
                         tovornjak.setPobrano(0);
                         cost += 10;
                         tovornjak.cas += 30;
-                        Tovornjak t = new Tovornjak(tip);
-                        while (j+1 < pot.size()){
-                            t.pot.add(pot.get(j+1));
-                            pot.remove(j+1);
-                        }
-                        tovornjaki.add(t);
                     }
                 }
-                if (j+1 < pot.size()) {
-                    int index2 = pot.get(j+1);
-                    if (m1.sosedjeIndex.contains(index2)) {
-                        double razdalja = getMinRazdalja(tovornjak, m1, index2);
-                        if (razdalja != Double.MAX_VALUE) {
-                            if (tovornjak.pobrano + tab[index2 - 1] <= maxCap) {
-                                cost += (razdalja * 0.1);
-                                tovornjak.cas += (razdalja / 50 * 60);
-                                if (tab[index2 - 1] > 0) {
-                                    tovornjak.cas += 12;
-                                    tovornjak.pobrano += tab[index2 - 1];
-                                    tab[index2 - 1] = 0;
-                                }
-                            } else if (tab[index2 - 1] > 0) {
-                                double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
-                                if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
-                                    tovornjak.pot.add(j + 1, 1);
-                                    cost += (razdalja1 * 0.1);
-                                    tovornjak.cas += (razdalja1 / 50 * 60);
-                                } else {
-                                    cost += (razdalja * 0.1);
-                                    tovornjak.cas += (razdalja / 50 * 60);
-                                }
-                            } else {
-                                cost += (razdalja * 0.1);
-                                tovornjak.cas += (razdalja / 50 * 60);
-                            }
-                        } else {
-                            double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
-                            if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
-                                tovornjak.pot.add(j + 1, 1);
-                                cost += (razdalja1 * 0.1);
-                                tovornjak.cas += (razdalja1 / 50 * 60);
-                            } else {
-                                cost += 15000 * mesta.size();
+                if (m1.sosedjeIndex.contains(index2)){
+                    double razdalja = getMinRazdalja(tovornjak, m1, index2);
+                    if (razdalja != Double.MAX_VALUE){
+                        if (tovornjak.pobrano + tab[index2-1] <= maxCap){
+                            cost += (razdalja * 0.1);
+                            tovornjak.cas += (razdalja/50*60);
+                            if (tab[index2-1] > 0){
+                                tovornjak.cas += 12;
+                                tovornjak.pobrano += tab[index2-1];
+                                tab[index2-1] = 0;
                             }
                         }
-                    } else {
-                        Mesto skupno = najdiSkupnega(m1.index, index2);
-                        if (skupno != null) {
-                            double razdalja = getMinRazdalja(tovornjak, m1, skupno.index);
-                            if (razdalja != Double.MAX_VALUE) {
-                                if (tovornjak.pobrano + tab[skupno.index - 1] <= maxCap) {
-                                    cost += (razdalja * 0.1);
-                                    tovornjak.cas += (razdalja / 50 * 60);
-                                    if (tab[skupno.index - 1] > 0) {
-                                        tovornjak.cas += 12;
-                                        tovornjak.pobrano += tab[skupno.index - 1];
-                                        tab[skupno.index - 1] = 0;
-                                    }
-                                    tovornjak.pot.add(j + 1, skupno.index);
-                                } else {
-                                    cost += 15000 * mesta.size();
-                                }
-                            } else {
-                                cost += 15000 * mesta.size();
+                        else if (tab[index2-1] > 0){
+                            double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
+                            if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
+                                tovornjak.pot.add(j+1, 1);
+                                cost += (razdalja1 * 0.1);
+                                tovornjak.cas += (razdalja1 / 50 * 60);
                             }
-                        } else
-                            cost += 25000 * mesta.size();
+                            else {
+                                cost += (razdalja * 0.1);
+                                tovornjak.cas += (razdalja/50*60);
+                            }
+                        }
+                        else {
+                            cost += (razdalja * 0.1);
+                            tovornjak.cas += (razdalja/50*60);
+                        }
                     }
+                    else {
+                        double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
+                        if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
+                            tovornjak.pot.add(j+1, 1);
+                            cost += (razdalja1 * 0.1);
+                            tovornjak.cas += (razdalja1 / 50 * 60);
+                        }
+                        else {
+                            cost += 15000*mesta.size();
+                        }
+                    }
+                }
+                else {
+                    Mesto skupno=najdiSkupnega(m1.index, index2);
+                    if (skupno != null) {
+                        double razdalja = getMinRazdalja(tovornjak, m1, skupno.index);
+                        if (razdalja != Double.MAX_VALUE) {
+                            if (tovornjak.pobrano + tab[skupno.index-1] <= maxCap) {
+                                cost += (razdalja * 0.1);
+                                tovornjak.cas += (razdalja / 50 * 60);
+                                if (tab[skupno.index-1] > 0) {
+                                    tovornjak.cas += 12;
+                                    tovornjak.pobrano += tab[skupno.index-1];
+                                    tab[skupno.index-1] = 0;
+                                }
+                                tovornjak.pot.add(j+1, skupno.index);
+                            }
+                            else {
+                                cost += 15000*mesta.size();
+                            }
+                        }
+                        else{
+                            cost += 15000*mesta.size();
+                        }
+                    }
+                    else
+                        cost += 25000 * mesta.size();
                 }
             }
             if (tovornjak.pobrano > 0)
@@ -241,37 +242,28 @@ public class Solution {
 
         double rand = Math.random();
 
-        if(rand < 0.2){
+        if(rand < 0.3){
             double randTip=Math.random();
             if(randTip<0.33) {
                 int rTovornjak = (int) (Math.random() * (tOrganski.size()));
-                int rIndex=(int) (Math.random() * (tOrganski.get(rTovornjak).pot.size()-1));
-                Mesto m1 = mesta.get(tOrganski.get(rTovornjak).pot.get(rIndex)-1);
-                int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                if (m1.sosedjeIndex.get(rSosed).intValue() == tOrganski.get(rTovornjak).pot.get(rIndex+1).intValue())
-                    rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                tOrganski.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
+                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
+                int rIndex=(int) (Math.random() * (tOrganski.get(rTovornjak).pot.size()-2)+1);
+                tOrganski.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
-            else if(randTip<0.67) {
+            else if(randTip>=0.33 && randTip<0.67) {
                 int rTovornjak = (int) (Math.random() * (tPlastika.size()));
-                int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-1));
-                Mesto m1 = mesta.get(tPlastika.get(rTovornjak).pot.get(rIndex)-1);
-                int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                if (m1.sosedjeIndex.get(rSosed).intValue() == tPlastika.get(rTovornjak).pot.get(rIndex+1).intValue())
-                    rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                tPlastika.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
+                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
+                int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-2)+1);
+                tPlastika.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
             else {
                 int rTovornjak = (int) (Math.random() * (tPapir.size()));
-                int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-1));
-                Mesto m1 = mesta.get(tPapir.get(rTovornjak).pot.get(rIndex)-1);
-                int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                if (m1.sosedjeIndex.get(rSosed).intValue() == tPapir.get(rTovornjak).pot.get(rIndex+1).intValue())
-                    rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                tPapir.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
+                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
+                int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-2)+1);
+                tPapir.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
             }
         }
-        else if (rand < 0.85){
+        else {
             double randTip=Math.random();
             if(randTip<0.33 ) {
                 int rTovornjak = (int) (Math.random() * (tOrganski.size()));
@@ -298,7 +290,7 @@ public class Solution {
                     }
                 }
             }
-            else if(randTip<0.67) {
+            else if(randTip>=0.33 && randTip<0.67) {
                 int rTovornjak = (int) (Math.random() * (tPlastika.size()));
                 if (tPlastika.get(rTovornjak).pot.size()-3 > 0) {
                     int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-3)+1);
@@ -345,21 +337,6 @@ public class Solution {
                         }
                     }
                 }
-            }
-        }
-        else {
-            double randTip=Math.random();
-            if(randTip<0.33) {
-                int rTovornjak = (int) (Math.random() * (tOrganski.size()));
-                tOrganski.remove(rTovornjak);
-            }
-            else if(randTip<0.67) {
-                int rTovornjak = (int) (Math.random() * (tPlastika.size()));
-                tPlastika.remove(rTovornjak);
-            }
-            else {
-                int rTovornjak = (int) (Math.random() * (tPapir.size()));
-                tPapir.remove(rTovornjak);
             }
         }
     }

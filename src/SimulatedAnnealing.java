@@ -14,11 +14,11 @@ public class SimulatedAnnealing {
         double T = 1;
         double Tmin = 0.0001;
         double alpha = 0.9;
-        int numIterations = 1000;
+        int numIterations = 7000;
 
         mesta = new LinkedList<>();
 
-        double maxCap = read("Problem4.txt");
+        double maxCap = read("Problem10.txt");
 
         int steviloTovornjakovOrganski = (int) (Math.ceil(vsotaSmeti(1) / maxCap));
         int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);
@@ -39,12 +39,6 @@ public class SimulatedAnnealing {
 
                 Solution nSol = new Solution(mesta, maxCap, fs);
 
-                for (int j = 0; j<7; j++){
-                    Solution nSol1 = new Solution(mesta, maxCap, fs);
-                    if (nSol1.cena < nSol.cena)
-                        nSol = nSol1;
-                }
-
                 double ap = Math.pow(Math.E, (fs.cena - nSol.cena)/T);
                 if (ap > Math.random())
                     fs = nSol;
@@ -58,31 +52,32 @@ public class SimulatedAnnealing {
         System.out.println(min.jeCisto(3));
         System.out.println("\n\n");
 
-        izpisiTovornjak(1, min);
-        izpisiTovornjak(2, min);
-        izpisiTovornjak(3, min);
+        for (int i = 0; i<Math.max(Math.max(min.tOrganski.size(), min.tPlastika.size()), min.tPapir.size()); i++){
+            if (i < min.tOrganski.size()){
+                System.out.print(1);
+                for (int j = 0; j<min.tOrganski.get(i).pot.size(); j++){
+                    System.out.print("," + min.tOrganski.get(i).pot.get(j));
+                }
+                System.out.println();
+            }
+            if (i < min.tPlastika.size()){
+                System.out.print(2);
+                for (int j = 0; j<min.tPlastika.get(i).pot.size(); j++){
+                    System.out.print("," + min.tPlastika.get(i).pot.get(j));
+                }
+                System.out.println();
+            }
+            if (i < min.tPapir.size()){
+                System.out.print(3);
+                for (int j = 0; j<min.tPapir.get(i).pot.size(); j++){
+                    System.out.print("," + min.tPapir.get(i).pot.get(j));
+                }
+                System.out.println();
+            }
+        }
 
         System.out.println("\n\n" + min.cena);
 
-    }
-
-    private static void izpisiTovornjak (int tip, Solution s){
-        LinkedList<Tovornjak> tovornjaki;
-        if (tip == 1)
-            tovornjaki = s.tOrganski;
-        else if (tip == 2)
-            tovornjaki = s.tPlastika;
-        else
-            tovornjaki = s.tPapir;
-
-        for (int i = 0; i<tovornjaki.size(); i++){
-            System.out.print(tip);
-            LinkedList<Integer> pot = tovornjaki.get(i).pot;
-            for (int j = 0; j<pot.size(); j++){
-                System.out.print("," + pot.get(j));
-            }
-            System.out.println();
-        }
     }
 
     private static Solution firstSolution(int steviloTovornjakovOrganski, int steviloTovornjakovPlastika, int steviloTovornjakovPapir, double maxCap) {
@@ -175,19 +170,22 @@ public class SimulatedAnnealing {
                     m1.sosedje.put(m2.index, new LinkedList<Razdalja>());
                 }
                 m1.sosedje.get(m2.index).add(r);
-                m1.sosedjeIndex.add(m2.index);
+                if (!m1.sosedjeIndex.contains(m2.index))
+                    m1.sosedjeIndex.add(m2.index);
                 if (m2.sosedje.get(m1.index) == null) {
                     m2.sosedje.put(m1.index, new LinkedList<Razdalja>());
                 }
                 m2.sosedje.get(m1.index).add(r);
-                m2.sosedjeIndex.add(m1.index);
+                if (!m2.sosedjeIndex.contains(m1.index))
+                    m2.sosedjeIndex.add(m1.index);
             }
             else {
                 if (m1.sosedje.get(m2.index) == null) {
                     m1.sosedje.put(m2.index, new LinkedList<Razdalja>());
                 }
                 m1.sosedje.get(m2.index).add(r);
-                m1.sosedjeIndex.add(m2.index);
+                if (!m1.sosedjeIndex.contains(m2.index))
+                    m1.sosedjeIndex.add(m2.index);
             }
         }
 
