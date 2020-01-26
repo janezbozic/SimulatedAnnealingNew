@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -15,11 +14,11 @@ public class SimulatedAnnealing {
         double T = 1;
         double Tmin = 0.0001;
         double alpha = 0.9;
-        int numIterations = 5000;
+        int numIterations = 1000;
 
         mesta = new LinkedList<>();
 
-        double maxCap = read("Problem3.txt");
+        double maxCap = read("Problem4.txt");
 
         int steviloTovornjakovOrganski = (int) (Math.ceil(vsotaSmeti(1) / maxCap));
         int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);
@@ -40,11 +39,11 @@ public class SimulatedAnnealing {
 
                 Solution nSol = new Solution(mesta, maxCap, fs);
 
-               /* for (int j = 0; j<10; j++){
+                for (int j = 0; j<7; j++){
                     Solution nSol1 = new Solution(mesta, maxCap, fs);
                     if (nSol1.cena < nSol.cena)
                         nSol = nSol1;
-                }*/
+                }
 
                 double ap = Math.pow(Math.E, (fs.cena - nSol.cena)/T);
                 if (ap > Math.random())
@@ -54,16 +53,16 @@ public class SimulatedAnnealing {
 
         }
 
-        System.out.println(fs.jeCisto(1));
-        System.out.println(fs.jeCisto(2));
-        System.out.println(fs.jeCisto(3));
+        System.out.println(min.jeCisto(1));
+        System.out.println(min.jeCisto(2));
+        System.out.println(min.jeCisto(3));
         System.out.println("\n\n");
 
-        izpisiTovornjak(1, fs);
-        izpisiTovornjak(2, fs);
-        izpisiTovornjak(3, fs);
+        izpisiTovornjak(1, min);
+        izpisiTovornjak(2, min);
+        izpisiTovornjak(3, min);
 
-        System.out.println("\n\n" + fs.cena);
+        System.out.println("\n\n" + min.cena);
 
     }
 
