@@ -417,64 +417,26 @@ public class Solution {
                 }
             }
         }
-       /* else if (rand < 0.95){
-            double randTip=Math.random();
-            if(randTip<0.33 ) {
-                Tovornjak t = new Tovornjak(1);
-                for (int i = 0; i < tOrganski.size(); i++){
-                    int rIndex = (int) (Math.random() * (tOrganski.get(i).pot.size() - 2) + 1);
-                    t.pot.add(tOrganski.get(i).pot.get(rIndex));
-                }
-                if (t.pot.get(t.pot.size()-1) != 1)
-                    t.pot.add(1);
-                tOrganski.add(t);
-            }
-            else if(randTip>=0.33 && randTip<0.67) {
-                Tovornjak t = new Tovornjak(2);
-                for (int i = 0; i < tPlastika.size(); i++){
-                    int rIndex = (int) (Math.random() * (tPlastika.get(i).pot.size() - 2) + 1);
-                    t.pot.add(tPlastika.get(i).pot.get(rIndex));
-                }
-                if (t.pot.get(t.pot.size()-1) != 1)
-                    t.pot.add(1);
-                tPlastika.add(t);
-            }
-            else {
-                Tovornjak t = new Tovornjak(3);
-                for (int i = 0; i < tPapir.size(); i++){
-                    int rIndex = (int) (Math.random() * (tPapir.get(i).pot.size() - 2) + 1);
-                    t.pot.add(tPapir.get(i).pot.get(rIndex));
-                }
-                if (t.pot.get(t.pot.size()-1) != 1)
-                    t.pot.add(1);
-                tPapir.add(t);
-            }
-        }
-        else {m1.sosedjeIndex
-            double randTip=Math.random();
-            if(randTip<0.33 && (int) (Math.ceil(vsotaSmeti(1)/maxCap)) < tOrganski.size()) {
-                int rTovornjak = (int) (Math.random() * (tOrganski.size()));
-                tOrganski.remove(rTovornjak);
-            }
-            else if(randTip>=0.33 && randTip<0.67 && (int) (Math.ceil(vsotaSmeti(2)/maxCap)) < tPlastika.size()) {
-                int rTovornjak = (int) (Math.random() * (tPlastika.size()));
-                tPlastika.remove(rTovornjak);
-            }
-            else if ((int) (Math.ceil(vsotaSmeti(3)/maxCap)) < tPapir.size()){
-                int rTovornjak = (int) (Math.random() * (tPapir.size()));
-                tPapir.remove(rTovornjak);
-            }
-        }*/
     }
     public Mesto najdiSkupnega(int index1, int index2){
         Mesto m1=mesta.get(index1-1);
         Mesto m2=mesta.get(index2-1);
+
+        LinkedList<Integer> listaSkupnih = new LinkedList<>();
+
         for(int i=0;i<m1.sosedjeIndex.size()-1; i++){
             if(m2.sosedjeIndex.contains(m1.sosedjeIndex.get(i)) && mesta.get(m1.sosedjeIndex.get(i)-1).sosedjeIndex.contains(m2.index)){
-                return mesta.get(m1.sosedjeIndex.get(i)-1);
+                listaSkupnih.add(mesta.get(m1.sosedjeIndex.get(i)-1).index);
             }
         }
-        return null;
+
+        if (listaSkupnih.size() == 0)
+            return null;
+
+        int index = (int) (Math.random() * (listaSkupnih.size() - 1));
+
+        return mesta.get(listaSkupnih.get(index)-1);
+
     }
 
     private boolean zeObstaja(LinkedList<Integer> pot, int rIndex) {

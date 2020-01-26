@@ -15,11 +15,11 @@ public class SimulatedAnnealing {
         double T = 1;
         double Tmin = 0.0001;
         double alpha = 0.9;
-        int numIterations = 1000;
+        int numIterations = 5000;
 
         mesta = new LinkedList<>();
 
-        double maxCap = read("Problem2.txt");
+        double maxCap = read("Problem9.txt");
 
         int steviloTovornjakovOrganski = (int) (Math.ceil(vsotaSmeti(1) / maxCap));
         int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);
@@ -28,25 +28,6 @@ public class SimulatedAnnealing {
         Solution fs = firstSolution(steviloTovornjakovOrganski, steviloTovornjakovPlastika, steviloTovornjakovPapir, maxCap);
 
         fs.cena = fs.vsotaCen();
-
-        System.out.println("Organski:");
-        for (int i = 0; i<fs.tOrganski.size(); i++){
-            System.out.println(Arrays.toString(fs.tOrganski.get(i).pot.toArray()));
-        }
-        System.out.println(fs.jeCisto(1));
-
-        System.out.println("\n\nPlastika:");
-        for (int i = 0; i<fs.tPlastika.size(); i++){
-            System.out.println(Arrays.toString(fs.tPlastika.get(i).pot.toArray()));
-        }
-        System.out.println(fs.jeCisto(2));
-
-        System.out.println("\n\nPapir:");
-        for (int i = 0; i<fs.tPapir.size(); i++){
-            System.out.println(Arrays.toString(fs.tPapir.get(i).pot.toArray()));
-        }
-        System.out.println(fs.jeCisto(3));
-
 
         Solution min = fs;
 
@@ -59,44 +40,50 @@ public class SimulatedAnnealing {
 
                 Solution nSol = new Solution(mesta, maxCap, fs);
 
-                for (int j = 0; j<10; j++){
+               /* for (int j = 0; j<10; j++){
                     Solution nSol1 = new Solution(mesta, maxCap, fs);
                     if (nSol1.cena < nSol.cena)
                         nSol = nSol1;
-                }
+                }*/
 
                 double ap = Math.pow(Math.E, (fs.cena - nSol.cena)/T);
                 if (ap > Math.random())
                     fs = nSol;
-                if(i==0)
-                    System.out.println(i);
             }
             T *= alpha;
-            if(T<0.01)
-                System.out.println(T);
 
         }
 
-        System.out.println("\n\n\n\n========================================================================");
-        System.out.println(fs.cena);
-        System.out.println("Organski:");
-        for (int i = 0; i<fs.tOrganski.size(); i++){
-            System.out.println(Arrays.toString(fs.tOrganski.get(i).pot.toArray()));
-        }
         System.out.println(fs.jeCisto(1));
-
-        System.out.println("\n\nPlastika:");
-        for (int i = 0; i<fs.tPlastika.size(); i++){
-            System.out.println(Arrays.toString(fs.tPlastika.get(i).pot.toArray()));
-        }
         System.out.println(fs.jeCisto(2));
-
-        System.out.println("\n\nPapir:");
-        for (int i = 0; i<fs.tPapir.size(); i++){
-            System.out.println(Arrays.toString(fs.tPapir.get(i).pot.toArray()));
-        }
         System.out.println(fs.jeCisto(3));
+        System.out.println("\n\n");
 
+        izpisiTovornjak(1, fs);
+        izpisiTovornjak(2, fs);
+        izpisiTovornjak(3, fs);
+
+        System.out.println("\n\n" + fs.cena);
+
+    }
+
+    private static void izpisiTovornjak (int tip, Solution s){
+        LinkedList<Tovornjak> tovornjaki;
+        if (tip == 1)
+            tovornjaki = s.tOrganski;
+        else if (tip == 2)
+            tovornjaki = s.tPlastika;
+        else
+            tovornjaki = s.tPapir;
+
+        for (int i = 0; i<tovornjaki.size(); i++){
+            System.out.print(tip);
+            LinkedList<Integer> pot = tovornjaki.get(i).pot;
+            for (int j = 0; j<pot.size(); j++){
+                System.out.print("," + pot.get(j));
+            }
+            System.out.println();
+        }
     }
 
     private static Solution firstSolution(int steviloTovornjakovOrganski, int steviloTovornjakovPlastika, int steviloTovornjakovPapir, double maxCap) {
