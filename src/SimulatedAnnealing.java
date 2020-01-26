@@ -19,7 +19,7 @@ public class SimulatedAnnealing {
 
         mesta = new LinkedList<>();
 
-        double maxCap = read("Problem9.txt");
+        double maxCap = read("Problem3.txt");
 
         int steviloTovornjakovOrganski = (int) (Math.ceil(vsotaSmeti(1) / maxCap));
         int steviloTovornjakovPlastika = (int) Math.ceil(vsotaSmeti(2) / maxCap);

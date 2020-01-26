@@ -137,15 +137,7 @@ public class Solution {
                             }
                         }
                         else{
-                           /* double razdalja1 = getMinRazdalja(tovornjak, m1, 1);
-                            if (razdalja1 < Double.MAX_VALUE && jeSosed(1, index2)) {
-                                tovornjak.pot.add(j+1, 1);
-                                cost += (razdalja1 * 0.1);
-                                tovornjak.cas += (razdalja1 / 50 * 60);
-                            }
-                            else {*/
-                                cost += 15000*mesta.size();
-                            //}
+                            cost += 15000*mesta.size();
                         }
                     }
                     else
@@ -280,67 +272,6 @@ public class Solution {
                 tPapir.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
             }
         }
-        else{
-            double randTip=Math.random();
-            if(randTip<0.33 ) {
-                int rTovornjak = (int) (Math.random() * (tOrganski.size()));
-                if (tOrganski.get(rTovornjak).pot.size()-3 > 0) {
-                    int rIndex = (int) (Math.random() * (tOrganski.get(rTovornjak).pot.size() - 3) + 1);
-                    tOrganski.get(rTovornjak).pot.remove(rIndex+1);
-                    if (!jeSosed(tOrganski.get(rTovornjak).pot.get(rIndex), tOrganski.get(rTovornjak).pot.get(rIndex+1))){
-                        Mesto m1 = mesta.get(tOrganski.get(rTovornjak).pot.get(rIndex)-1);
-                        int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                        tOrganski.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
-                    }
-                }
-            }
-            else if(randTip>=0.33 && randTip<0.67) {
-                int rTovornjak = (int) (Math.random() * (tPlastika.size()));
-                if (tPlastika.get(rTovornjak).pot.size()-3 > 0) {
-                    int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-3)+1);
-                    tPlastika.get(rTovornjak).pot.remove(rIndex+1);
-                    if (!jeSosed(tPlastika.get(rTovornjak).pot.get(rIndex), tPlastika.get(rTovornjak).pot.get(rIndex+1))){
-                        Mesto m1 = mesta.get(tPlastika.get(rTovornjak).pot.get(rIndex)-1);
-                        int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                        tPlastika.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
-                    }
-                }
-            }
-            else {
-                int rTovornjak = (int) (Math.random() * (tPapir.size()));
-                if (tPapir.get(rTovornjak).pot.size()-3 > 0) {
-                    int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-3)+1);
-                    tPapir.get(rTovornjak).pot.remove(rIndex+1);
-                    if (!jeSosed(tPapir.get(rTovornjak).pot.get(rIndex), tPapir.get(rTovornjak).pot.get(rIndex+1))){
-                        Mesto m1 = mesta.get(tPapir.get(rTovornjak).pot.get(rIndex)-1);
-                        int rSosed = (int) (Math.random() * (m1.sosedjeIndex.size() - 1));
-                        tPapir.get(rTovornjak).pot.add(rIndex+1, m1.sosedjeIndex.get(rSosed));
-                    }
-                }
-            }
-        }
-        if(rand < 0.25){
-            double randTip=Math.random();
-            if(randTip<0.33) {
-                int rTovornjak = (int) (Math.random() * (tOrganski.size()));
-                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
-                int rIndex=(int) (Math.random() * (tOrganski.get(rTovornjak).pot.size()-2)+1);
-                tOrganski.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
-            }
-            else if(randTip>=0.33 && randTip<0.67) {
-                int rTovornjak = (int) (Math.random() * (tPlastika.size()));
-                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
-                int rIndex=(int) (Math.random() * (tPlastika.get(rTovornjak).pot.size()-2)+1);
-                tPlastika.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
-            }
-            else {
-                int rTovornjak = (int) (Math.random() * (tPapir.size()));
-                int rMesto= (int) (Math.random() * (mesta.size()) + 1);
-                int rIndex=(int) (Math.random() * (tPapir.get(rTovornjak).pot.size()-2)+1);
-                tPapir.get(rTovornjak).pot.add(rIndex, mesta.get(rMesto-1).index);
-            }
-        }
-        //else if (rand < 0.8){
         else {
             double randTip=Math.random();
             if(randTip<0.33 ) {
